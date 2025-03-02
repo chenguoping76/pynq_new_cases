@@ -1,0 +1,4 @@
+将内存由一行640个unsigned int 数据流化输出
+该TPG(test pattern generator) 构造一个640x 480 （width X high）的二维数据，并通过stream 输出
+
+该stream 输出可以接入vision library的IP
