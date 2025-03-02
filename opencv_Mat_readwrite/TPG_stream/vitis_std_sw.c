@@ -12,7 +12,7 @@
 #define TPG_ID XPAR_TPG_0_DEVICE_ID
 
 #define WIDTH 640
-//#define HEIGHT 480
+#define HEIGHT 480
 //#define IM_SIZE WIDTH*HEIGHT
 
 unsigned int image[WIDTH];
