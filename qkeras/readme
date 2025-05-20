@@ -1,6 +1,6 @@
 autoQKeras 配置和测试案例
 ubuntu 18.04.05 lts
-python 3.8.
+python 3.8.20
 tensorflow==2.11.0
 qkeras==0.9.0
 不安装hls4ml==1.1.0 
