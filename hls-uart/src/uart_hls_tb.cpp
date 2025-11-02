@@ -15,11 +15,12 @@ void print_binary(ap_uint<8> val) {
 }
 
 int main() {
-    // AXI-Lite memory (simulating registers)
-    ap_uint<32> axi_lite_mem[16];
-    for (int i = 0; i < 16; i++) {
-        axi_lite_mem[i] = 0;
-    }
+    // AXI-Lite registers (individual scalars)
+    ap_uint<32> control_reg = 0;
+    ap_uint<32> baud_div_reg = 0;
+    ap_uint<32> status_reg = 0;
+    ap_uint<32> tx_count_reg = 0;
+    ap_uint<32> rx_count_reg = 0;
 
     // AXI-Stream interfaces
     hls::stream<axis_data_t> tx_stream("tx_stream");
@@ -41,13 +42,14 @@ int main() {
     ap_uint<32> baud_115200 = 54;
 
     cout << "\nTest 1: Configure UART for 115200 baud" << endl;
-    axi_lite_mem[REG_BAUD_DIV >> 2] = baud_115200;
-    axi_lite_mem[REG_CONTROL >> 2] = 0x03;  // Enable TX and RX
+    baud_div_reg = baud_115200;
+    control_reg = 0x03;  // Enable TX and RX
     cout << "Baud divisor set to: " << baud_115200 << endl;
 
     // Run a few cycles to apply configuration
     for (int i = 0; i < 100; i++) {
-        uart_hls(axi_lite_mem, tx_stream, rx_stream, uart_rxd, uart_txd);
+        uart_hls(control_reg, baud_div_reg, status_reg, tx_count_reg, rx_count_reg,
+                 tx_stream, rx_stream, uart_rxd, uart_txd);
         uart_loopback_wire = uart_txd;  // Loopback connection
         uart_rxd = uart_loopback_wire;
     }
@@ -78,7 +80,8 @@ int main() {
 
     for (int iter = 0; iter < ITERATIONS && received_count < test_data_len; iter++) {
         // Call DUT
-        uart_hls(axi_lite_mem, tx_stream, rx_stream, uart_rxd, uart_txd);
+        uart_hls(control_reg, baud_div_reg, status_reg, tx_count_reg, rx_count_reg,
+                 tx_stream, rx_stream, uart_rxd, uart_txd);
 
         // Loopback connection
         uart_loopback_wire = uart_txd;
@@ -98,10 +101,9 @@ int main() {
 
         // Print status every 10000 iterations
         if (iter % 10000 == 0) {
-            ap_uint<32> status = axi_lite_mem[REG_STATUS >> 2];
-            cout << "Iteration " << iter << ": Status=0x" << hex << status
-                 << ", TX_count=" << dec << axi_lite_mem[REG_TX_COUNT >> 2]
-                 << ", RX_count=" << axi_lite_mem[REG_RX_COUNT >> 2] << endl;
+            cout << "Iteration " << iter << ": Status=0x" << hex << status_reg
+                 << ", TX_count=" << dec << tx_count_reg
+                 << ", RX_count=" << rx_count_reg << endl;
         }
     }
 
@@ -132,24 +134,20 @@ int main() {
     // Run additional cycles to ensure all transmissions are complete
     cout << "Waiting for all transmissions to complete..." << endl;
     for (int i = 0; i < 5000; i++) {
-        uart_hls(axi_lite_mem, tx_stream, rx_stream, uart_rxd, uart_txd);
+        uart_hls(control_reg, baud_div_reg, status_reg, tx_count_reg, rx_count_reg,
+                 tx_stream, rx_stream, uart_rxd, uart_txd);
         uart_loopback_wire = uart_txd;
         uart_rxd = uart_loopback_wire;
     }
 
-    ap_uint<32> status = axi_lite_mem[REG_STATUS >> 2];
-    ap_uint<32> tx_count = axi_lite_mem[REG_TX_COUNT >> 2];
-    ap_uint<32> rx_count = axi_lite_mem[REG_RX_COUNT >> 2];
+    cout << "Status Register: 0x" << hex << status_reg << dec << endl;
+    cout << "  TX Busy:       " << (int)status_reg[0] << endl;
+    cout << "  RX Valid:      " << (int)status_reg[1] << endl;
+    cout << "  Reserved bits: " << (int)status_reg[2] << endl;
+    cout << "TX Count: " << tx_count_reg << endl;
+    cout << "RX Count: " << rx_count_reg << endl;
 
-    cout << "Status Register: 0x" << hex << status << dec << endl;
-    cout << "  TX Busy:       " << (int)status[0] << endl;
-    cout << "  RX Valid:      " << (int)status[1] << endl;
-    cout << "  TX FIFO Full:  " << (int)status[2] << endl;
-    cout << "  RX FIFO Empty: " << (int)status[3] << endl;
-    cout << "TX Count: " << tx_count << endl;
-    cout << "RX Count: " << rx_count << endl;
-
-    if (tx_count != test_data_len || rx_count != test_data_len) {
+    if (tx_count_reg != test_data_len || rx_count_reg != test_data_len) {
         cout << "ERROR: Counter mismatch!" << endl;
         errors++;
     }
@@ -168,11 +166,12 @@ int main() {
     for (int b = 0; b < 4; b++) {
         cout << "Setting baud rate to " << baud_names[b] << " (divisor="
              << baud_rates[b] << ")... ";
-        axi_lite_mem[REG_BAUD_DIV >> 2] = baud_rates[b];
+        baud_div_reg = baud_rates[b];
 
         // Run a few cycles
         for (int i = 0; i < 10; i++) {
-            uart_hls(axi_lite_mem, tx_stream, rx_stream, uart_rxd, uart_txd);
+            uart_hls(control_reg, baud_div_reg, status_reg, tx_count_reg, rx_count_reg,
+                     tx_stream, rx_stream, uart_rxd, uart_txd);
         }
 
         cout << "OK" << endl;
@@ -180,15 +179,13 @@ int main() {
 
     // Test reset
     cout << "\nTest 7: Test reset functionality" << endl;
-    axi_lite_mem[REG_CONTROL >> 2] = 0x07;  // Set reset bit
-    uart_hls(axi_lite_mem, tx_stream, rx_stream, uart_rxd, uart_txd);
+    control_reg = 0x07;  // Set reset bit
+    uart_hls(control_reg, baud_div_reg, status_reg, tx_count_reg, rx_count_reg,
+             tx_stream, rx_stream, uart_rxd, uart_txd);
 
-    tx_count = axi_lite_mem[REG_TX_COUNT >> 2];
-    rx_count = axi_lite_mem[REG_RX_COUNT >> 2];
+    cout << "After reset: TX_count=" << tx_count_reg << ", RX_count=" << rx_count_reg << endl;
 
-    cout << "After reset: TX_count=" << tx_count << ", RX_count=" << rx_count << endl;
-
-    if (tx_count == 0 && rx_count == 0) {
+    if (tx_count_reg == 0 && rx_count_reg == 0) {
         cout << "Reset test [PASS]" << endl;
     } else {
         cout << "Reset test [FAIL]" << endl;

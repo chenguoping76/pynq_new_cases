@@ -5,12 +5,12 @@
 #include "ap_axi_sdata.h"
 #include "hls_stream.h"
 
-// AXI4-Lite Register Map
-#define REG_CONTROL     0x00  // Bit 0: Enable TX, Bit 1: Enable RX, Bit 2: Reset
-#define REG_STATUS      0x04  // Bit 0: TX Busy, Bit 1: RX Data Valid, Bit 2: TX FIFO Full, Bit 3: RX FIFO Empty
-#define REG_BAUD_DIV    0x08  // Baud rate divisor
-#define REG_TX_COUNT    0x0C  // Number of bytes transmitted
-#define REG_RX_COUNT    0x10  // Number of bytes received
+// AXI4-Lite Register Map (for reference - actual registers are individual ports)
+// control_reg bits: Bit 0: Enable TX, Bit 1: Enable RX, Bit 2: Reset
+// status_reg bits:  Bit 0: TX Busy, Bit 1: RX Data Valid, Bit 2-3: Reserved (always 0)
+// baud_div_reg:     Baud rate divisor value
+// tx_count_reg:     Number of bytes transmitted
+// rx_count_reg:     Number of bytes received
 
 // AXI4-Stream data type
 typedef ap_axis<8, 0, 0, 0> axis_data_t;
@@ -27,8 +27,6 @@ struct uart_config_t {
 struct uart_status_t {
     ap_uint<1> tx_busy;        // Transmitter busy
     ap_uint<1> rx_valid;       // Receiver data valid
-    ap_uint<1> tx_fifo_full;   // TX FIFO full
-    ap_uint<1> rx_fifo_empty;  // RX FIFO empty
     ap_uint<32> tx_count;      // Transmitted byte count
     ap_uint<32> rx_count;      // Received byte count
 };
@@ -44,8 +42,12 @@ inline ap_uint<32> calc_baud_divisor(ap_uint<32> baud_rate) {
 
 // Top function declaration
 void uart_hls(
-    // AXI4-Lite interface for control/status
-    volatile ap_uint<32> *axi_lite,
+    // AXI4-Lite control registers
+    ap_uint<32> control_reg,
+    ap_uint<32> baud_div_reg,
+    ap_uint<32> &status_reg,
+    ap_uint<32> &tx_count_reg,
+    ap_uint<32> &rx_count_reg,
     // AXI4-Stream TX data input
     hls::stream<axis_data_t> &tx_stream,
     // AXI4-Stream RX data output

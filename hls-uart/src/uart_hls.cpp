@@ -149,13 +149,21 @@ void uart_rx(
 
 // Top function with AXI interfaces
 void uart_hls(
-    volatile ap_uint<32> *axi_lite,
+    ap_uint<32> control_reg,
+    ap_uint<32> baud_div_reg,
+    ap_uint<32> &status_reg,
+    ap_uint<32> &tx_count_reg,
+    ap_uint<32> &rx_count_reg,
     hls::stream<axis_data_t> &tx_stream,
     hls::stream<axis_data_t> &rx_stream,
     ap_uint<1> uart_rxd,
     ap_uint<1> &uart_txd
 ) {
-    #pragma HLS INTERFACE s_axilite port=axi_lite bundle=control
+    #pragma HLS INTERFACE s_axilite port=control_reg bundle=control
+    #pragma HLS INTERFACE s_axilite port=baud_div_reg bundle=control
+    #pragma HLS INTERFACE s_axilite port=status_reg bundle=control
+    #pragma HLS INTERFACE s_axilite port=tx_count_reg bundle=control
+    #pragma HLS INTERFACE s_axilite port=rx_count_reg bundle=control
     #pragma HLS INTERFACE axis port=tx_stream
     #pragma HLS INTERFACE axis port=rx_stream
     #pragma HLS INTERFACE ap_none port=uart_rxd
@@ -168,10 +176,6 @@ void uart_hls(
     static ap_uint<1> rx_valid = 0;
     static ap_uint<32> tx_count = 0;
     static ap_uint<32> rx_count = 0;
-
-    // Read control registers
-    ap_uint<32> control_reg = axi_lite[REG_CONTROL >> 2];
-    ap_uint<32> baud_div_reg = axi_lite[REG_BAUD_DIV >> 2];
 
     // Parse control register
     config.tx_enable = control_reg[0];
@@ -199,13 +203,14 @@ void uart_hls(
     }
 
     // Write status registers
-    ap_uint<32> status_reg = 0;
+    status_reg = 0;
     status_reg[0] = tx_busy;
     status_reg[1] = rx_valid;
-    status_reg[2] = tx_stream.full();
-    status_reg[3] = rx_stream.empty();
+    // Note: tx_stream.full() and rx_stream.empty() cannot be checked here
+    // as they would cause bidirectional access on the stream interfaces
+    status_reg[2] = 0;  // TX stream full status not available
+    status_reg[3] = 0;  // RX stream empty status not available
 
-    axi_lite[REG_STATUS >> 2] = status_reg;
-    axi_lite[REG_TX_COUNT >> 2] = tx_count;
-    axi_lite[REG_RX_COUNT >> 2] = rx_count;
+    tx_count_reg = tx_count;
+    rx_count_reg = rx_count;
 }
