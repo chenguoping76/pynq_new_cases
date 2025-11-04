@@ -1,11 +1,32 @@
 演示使用HLS和Vivado， pynq 快速构建zynq soc 硬件控制，驱动生成
 
 第0步：下载本目录的两个文件夹，解压至ubuntu 环境
+(base) ubuntu@ubuntu:~/workspace/B220/hls-uart-project$ tree
+.
+├── src
+│   ├── example_pynq.py
+│   ├── README.md
+│   ├── run_hls.tcl
+│   ├── uart_hls.cpp
+│   ├── uart_hls_driver.py
+│   ├── uart_hls.h
+│   └── uart_hls_tb.cpp
+└── vivado_proj
+    ├── build_project.tcl
+    ├── create_uart_project.tcl
+    └── run_vivado.sh
+2 directories, 10 files
+
 
 第1步：source 软件
 ubuntu@ubuntu:~/workspace/B220/hls-uart-project$ source /opt/Xilinx/Vitis/2022.2/settings64.sh
 
-
 第2步：生成hls-uart IP
+ubuntu@ubuntu:~/workspace/B220/hls-uart-project$cd src
+ubuntu@ubuntu:~/workspace/B220/hls-uart-project/src$vitis_hls -f run_hls.tcl
 
 第3步：构建vivado 集成系统
+ubuntu@ubuntu:~/workspace/B220/hls-uart-project$cd.. && cd vivado_proj
+ubuntu@ubuntu:~/workspace/B220/hls-uart-project/vivado_proj$sudo chmod+x run_vivado.sh
+ubuntu@ubuntu:~/workspace/B220/hls-uart-project/vivado_proj$./run_vivado.sh
+根据提示，选择1-6执行
