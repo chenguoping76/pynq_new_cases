@@ -10,10 +10,12 @@
 set project_name "hls_uart_dma"
 set project_dir "./vivado_project"
 set bd_name "uart_system"
-set hls_ip_repo "../hls_project/solution1/impl/ip"
+set hls_ip_repo "./uart_hls/solution1/impl/ip"
 
 # Board and device settings
-set board_part "ykmmwave.com:BKB220:part0:1.0"
+# downlad https://github.com/chenguoping76/pynq_new_cases/blob/main/ykmmwave-20251104.zip
+# extract to /opt/Xilinx/Vivado/2022.2/data/xhub/boards
+set board_part "ykmmwave.com:BKB220:part0:3.0"
 set device_part "xc7z020clg400-1"
 
 # Create project directory if it doesn't exist
