@@ -25,8 +25,458 @@ ubuntu@ubuntu:~/workspace/B220/hls-uart-project$ source /opt/Xilinx/Vitis/2022.2
 ubuntu@ubuntu:~/workspace/B220/hls-uart-project$cd src
 ubuntu@ubuntu:~/workspace/B220/hls-uart-project/src$vitis_hls -f run_hls.tcl
 
+(base) ubuntu@ubuntu:~/workspace/B220/hls-uart-project/src$ tree
+.
+├── example_pynq.py
+├── README.md
+├── run_hls.tcl
+├── uart_hls
+│   ├── hls.app
+│   └── solution1
+│       ├── csim
+│       │   ├── build
+│       │   │   ├── csim.exe
+│       │   │   ├── csim.mk
+│       │   │   ├── Makefile.rules
+│       │   │   ├── obj
+│       │   │   │   ├── uart_hls.d
+│       │   │   │   ├── uart_hls.o
+│       │   │   │   ├── uart_hls_tb.d
+│       │   │   │   └── uart_hls_tb.o
+│       │   │   ├── run_sim.tcl
+│       │   │   └── sim.sh
+│       │   └── report
+│       │       └── uart_hls_csim.log
+│       ├── impl
+│       │   ├── export.zip
+│       │   ├── ip
+│       │   │   ├── component.xml
+│       │   │   ├── constraints
+│       │   │   │   └── uart_hls_ooc.xdc
+│       │   │   ├── doc
+│       │   │   │   └── ReleaseNotes.txt
+│       │   │   ├── drivers
+│       │   │   │   └── uart_hls_v1_0
+│       │   │   │       ├── data
+│       │   │   │       │   ├── uart_hls.mdd
+│       │   │   │       │   └── uart_hls.tcl
+│       │   │   │       └── src
+│       │   │   │           ├── Makefile
+│       │   │   │           ├── xuart_hls.c
+│       │   │   │           ├── xuart_hls.h
+│       │   │   │           ├── xuart_hls_hw.h
+│       │   │   │           ├── xuart_hls_linux.c
+│       │   │   │           └── xuart_hls_sinit.c
+│       │   │   ├── example
+│       │   │   │   ├── ipi_example.sh
+│       │   │   │   └── ipi_example.tcl
+│       │   │   ├── hdl
+│       │   │   │   ├── verilog
+│       │   │   │   │   ├── uart_hls_control_s_axi.v
+│       │   │   │   │   ├── uart_hls_hls_deadlock_idx0_monitor.v
+│       │   │   │   │   ├── uart_hls_hls_deadlock_kernel_monitor_top.vh
+│       │   │   │   │   ├── uart_hls_regslice_both.v
+│       │   │   │   │   ├── uart_hls_uart_rx.v
+│       │   │   │   │   └── uart_hls.v
+│       │   │   │   └── vhdl
+│       │   │   │       ├── uart_hls_control_s_axi.vhd
+│       │   │   │       ├── uart_hls_regslice_both.vhd
+│       │   │   │       ├── uart_hls_uart_rx.vhd
+│       │   │   │       └── uart_hls.vhd
+│       │   │   ├── misc
+│       │   │   │   └── logo.png
+│       │   │   ├── pack.sh
+│       │   │   ├── run_ippack.tcl
+│       │   │   ├── subcore
+│       │   │   ├── sysgen_info.xml
+│       │   │   ├── uart_hls_info.xml
+│       │   │   ├── vivado.jou
+│       │   │   ├── vivado.log
+│       │   │   ├── xgui
+│       │   │   │   └── uart_hls_v1_0.tcl
+│       │   │   └── xilinx_com_hls_uart_hls_1_0.zip
+│       │   ├── misc
+│       │   │   ├── drivers
+│       │   │   │   └── uart_hls_v1_0
+│       │   │   │       ├── data
+│       │   │   │       │   ├── uart_hls.mdd
+│       │   │   │       │   └── uart_hls.tcl
+│       │   │   │       └── src
+│       │   │   │           ├── Makefile
+│       │   │   │           ├── xuart_hls.c
+│       │   │   │           ├── xuart_hls.h
+│       │   │   │           ├── xuart_hls_hw.h
+│       │   │   │           ├── xuart_hls_linux.c
+│       │   │   │           └── xuart_hls_sinit.c
+│       │   │   └── logo.png
+│       │   ├── verilog
+│       │   │   ├── uart_hls_control_s_axi.v
+│       │   │   ├── uart_hls_hls_deadlock_idx0_monitor.v
+│       │   │   ├── uart_hls_hls_deadlock_kernel_monitor_top.vh
+│       │   │   ├── uart_hls_regslice_both.v
+│       │   │   ├── uart_hls_uart_rx.v
+│       │   │   └── uart_hls.v
+│       │   └── vhdl
+│       │       ├── uart_hls_control_s_axi.vhd
+│       │       ├── uart_hls_regslice_both.vhd
+│       │       ├── uart_hls_uart_rx.vhd
+│       │       └── uart_hls.vhd
+│       ├── solution1.aps
+│       ├── solution1_data.json
+│       ├── solution1.directive
+│       ├── solution1.log
+│       └── syn
+│           ├── report
+│           │   ├── csynth.rpt
+│           │   ├── csynth.xml
+│           │   ├── uart_hls_csynth.rpt
+│           │   ├── uart_hls_csynth.xml
+│           │   ├── uart_rx_csynth.rpt
+│           │   └── uart_rx_csynth.xml
+│           ├── verilog
+│           │   ├── uart_hls_control_s_axi.v
+│           │   ├── uart_hls_regslice_both.v
+│           │   ├── uart_hls_uart_rx.v
+│           │   └── uart_hls.v
+│           └── vhdl
+│               ├── uart_hls_control_s_axi.vhd
+│               ├── uart_hls_regslice_both.vhd
+│               ├── uart_hls_uart_rx.vhd
+│               └── uart_hls.vhd
+├── uart_hls.cpp
+├── uart_hls_driver.py
+├── uart_hls.h
+├── uart_hls_tb.cpp
+└── vitis_hls.log
+
+32 directories, 89 files
+
+
 第3步：构建vivado 集成系统
 ubuntu@ubuntu:~/workspace/B220/hls-uart-project$cd.. && cd vivado_proj
-ubuntu@ubuntu:~/workspace/B220/hls-uart-project/vivado_proj$sudo chmod+x run_vivado.sh
+ubuntu@ubuntu:~/workspace/B220/hls-uart-project/vivado_proj$sudo chmod +x run_vivado.sh
 ubuntu@ubuntu:~/workspace/B220/hls-uart-project/vivado_proj$./run_vivado.sh
-根据提示，选择1-6执行
+根据提示，选择1-6执行， 如首先选择1；完成后，选择5，结果如下：
+(base) ubuntu@ubuntu:~/workspace/B220/hls-uart-project/vivado_proj$ tree
+.
+├── build_project.tcl
+├── create_uart_project.tcl
+├── NA
+│   └── ps7_summary.html
+├── run_vivado.sh
+├── vivado_3679.backup.jou
+├── vivado_3679.backup.log
+├── vivado.jou
+├── vivado.log
+├── vivado_pid3753.str
+└── vivado_project
+    ├── hls_uart_dma.cache
+    │   ├── compile_simlib
+    │   │   ├── activehdl
+    │   │   ├── modelsim
+    │   │   ├── questa
+    │   │   ├── riviera
+    │   │   ├── vcs
+    │   │   └── xcelium
+    │   └── wt
+    │       └── project.wpc
+    ├── hls_uart_dma.gen
+    │   └── sources_1
+    │       └── bd
+    │           └── uart_system
+    │               ├── hdl
+    │               │   └── uart_system_wrapper.v
+    │               ├── hw_handoff
+    │               │   └── uart_system.hwh
+    │               ├── ip
+    │               │   ├── uart_system_auto_pc_0
+    │               │   │   ├── sim
+    │               │   │   │   ├── uart_system_auto_pc_0.cpp
+    │               │   │   │   ├── uart_system_auto_pc_0.h
+    │               │   │   │   ├── uart_system_auto_pc_0_sc.cpp
+    │               │   │   │   ├── uart_system_auto_pc_0_sc.h
+    │               │   │   │   ├── uart_system_auto_pc_0_stub.sv
+    │               │   │   │   └── uart_system_auto_pc_0.v
+    │               │   │   ├── src
+    │               │   │   │   ├── axi_protocol_converter.cpp
+    │               │   │   │   └── axi_protocol_converter.h
+    │               │   │   ├── synth
+    │               │   │   │   └── uart_system_auto_pc_0.v
+    │               │   │   ├── uart_system_auto_pc_0_ooc.xdc
+    │               │   │   └── uart_system_auto_pc_0.xml
+    │               │   ├── uart_system_auto_pc_1
+    │               │   │   ├── sim
+    │               │   │   │   ├── uart_system_auto_pc_1.cpp
+    │               │   │   │   ├── uart_system_auto_pc_1.h
+    │               │   │   │   ├── uart_system_auto_pc_1_sc.cpp
+    │               │   │   │   ├── uart_system_auto_pc_1_sc.h
+    │               │   │   │   ├── uart_system_auto_pc_1_stub.sv
+    │               │   │   │   └── uart_system_auto_pc_1.v
+    │               │   │   ├── src
+    │               │   │   │   ├── axi_protocol_converter.cpp
+    │               │   │   │   └── axi_protocol_converter.h
+    │               │   │   ├── synth
+    │               │   │   │   └── uart_system_auto_pc_1.v
+    │               │   │   ├── uart_system_auto_pc_1_ooc.xdc
+    │               │   │   └── uart_system_auto_pc_1.xml
+    │               │   ├── uart_system_axi_dma_rx_0
+    │               │   │   ├── sim
+    │               │   │   │   └── uart_system_axi_dma_rx_0.vhd
+    │               │   │   ├── synth
+    │               │   │   │   └── uart_system_axi_dma_rx_0.vhd
+    │               │   │   ├── uart_system_axi_dma_rx_0_clocks.xdc
+    │               │   │   ├── uart_system_axi_dma_rx_0_ooc.xdc
+    │               │   │   ├── uart_system_axi_dma_rx_0.xdc
+    │               │   │   └── uart_system_axi_dma_rx_0.xml
+    │               │   ├── uart_system_axi_dma_tx_0
+    │               │   │   ├── sim
+    │               │   │   │   └── uart_system_axi_dma_tx_0.vhd
+    │               │   │   ├── synth
+    │               │   │   │   └── uart_system_axi_dma_tx_0.vhd
+    │               │   │   ├── uart_system_axi_dma_tx_0_clocks.xdc
+    │               │   │   ├── uart_system_axi_dma_tx_0_ooc.xdc
+    │               │   │   ├── uart_system_axi_dma_tx_0.xdc
+    │               │   │   └── uart_system_axi_dma_tx_0.xml
+    │               │   ├── uart_system_axi_interconnect_gp0_0
+    │               │   │   └── uart_system_axi_interconnect_gp0_0.xml
+    │               │   ├── uart_system_axi_interconnect_hp0_0
+    │               │   │   └── uart_system_axi_interconnect_hp0_0.xml
+    │               │   ├── uart_system_processing_system7_0_0
+    │               │   │   ├── hdl
+    │               │   │   │   └── verilog
+    │               │   │   │       ├── processing_system7_v5_5_processing_system7.v
+    │               │   │   │       └── uart_system_processing_system7_0_0.hwdef
+    │               │   │   ├── ps7_init.c
+    │               │   │   ├── ps7_init_gpl.c
+    │               │   │   ├── ps7_init_gpl.h
+    │               │   │   ├── ps7_init.h
+    │               │   │   ├── ps7_init.html
+    │               │   │   ├── ps7_init.tcl
+    │               │   │   ├── ps7_parameters.xml
+    │               │   │   ├── sim
+    │               │   │   │   ├── libps7.dll
+    │               │   │   │   ├── libps7.so
+    │               │   │   │   ├── libremoteport.dll
+    │               │   │   │   ├── libremoteport.so
+    │               │   │   │   ├── uart_system_processing_system7_0_0.cpp
+    │               │   │   │   ├── uart_system_processing_system7_0_0.h
+    │               │   │   │   ├── uart_system_processing_system7_0_0_sc.cpp
+    │               │   │   │   ├── uart_system_processing_system7_0_0_sc.h
+    │               │   │   │   ├── uart_system_processing_system7_0_0_stub.sv
+    │               │   │   │   ├── uart_system_processing_system7_0_0.sv
+    │               │   │   │   └── uart_system_processing_system7_0_0.v
+    │               │   │   ├── sim_tlm
+    │               │   │   │   ├── b_transport_converter.h
+    │               │   │   │   ├── processing_system7_v5_5_tlm.cpp
+    │               │   │   │   ├── processing_system7_v5_5_tlm.h
+    │               │   │   │   ├── xilinx-zynq.cc
+    │               │   │   │   └── xilinx-zynq.h
+    │               │   │   ├── synth
+    │               │   │   │   └── uart_system_processing_system7_0_0.v
+    │               │   │   ├── uart_system_processing_system7_0_0.xdc
+    │               │   │   └── uart_system_processing_system7_0_0.xml
+    │               │   ├── uart_system_rst_ps7_100M_0
+    │               │   │   ├── sim
+    │               │   │   │   └── uart_system_rst_ps7_100M_0.vhd
+    │               │   │   ├── synth
+    │               │   │   │   └── uart_system_rst_ps7_100M_0.vhd
+    │               │   │   ├── uart_system_rst_ps7_100M_0_board.xdc
+    │               │   │   ├── uart_system_rst_ps7_100M_0_ooc.xdc
+    │               │   │   ├── uart_system_rst_ps7_100M_0.xdc
+    │               │   │   └── uart_system_rst_ps7_100M_0.xml
+    │               │   ├── uart_system_uart_hls_0_0
+    │               │   │   ├── constraints
+    │               │   │   │   └── uart_hls_ooc.xdc
+    │               │   │   ├── drivers
+    │               │   │   │   └── uart_hls_v1_0
+    │               │   │   │       ├── data
+    │               │   │   │       │   ├── uart_hls.mdd
+    │               │   │   │       │   └── uart_hls.tcl
+    │               │   │   │       └── src
+    │               │   │   │           ├── Makefile
+    │               │   │   │           ├── xuart_hls.c
+    │               │   │   │           ├── xuart_hls.h
+    │               │   │   │           ├── xuart_hls_hw.h
+    │               │   │   │           ├── xuart_hls_linux.c
+    │               │   │   │           └── xuart_hls_sinit.c
+    │               │   │   ├── sim
+    │               │   │   │   └── uart_system_uart_hls_0_0.v
+    │               │   │   ├── synth
+    │               │   │   │   └── uart_system_uart_hls_0_0.v
+    │               │   │   └── uart_system_uart_hls_0_0.xml
+    │               │   ├── uart_system_xbar_0
+    │               │   │   ├── sim
+    │               │   │   │   ├── uart_system_xbar_0.cpp
+    │               │   │   │   ├── uart_system_xbar_0.h
+    │               │   │   │   ├── uart_system_xbar_0_sc.cpp
+    │               │   │   │   ├── uart_system_xbar_0_sc.h
+    │               │   │   │   ├── uart_system_xbar_0_stub.sv
+    │               │   │   │   └── uart_system_xbar_0.v
+    │               │   │   ├── src
+    │               │   │   │   ├── axi_crossbar.cpp
+    │               │   │   │   └── axi_crossbar.h
+    │               │   │   ├── synth
+    │               │   │   │   └── uart_system_xbar_0.v
+    │               │   │   ├── uart_system_xbar_0_ooc.xdc
+    │               │   │   └── uart_system_xbar_0.xml
+    │               │   ├── uart_system_xbar_1
+    │               │   │   ├── sim
+    │               │   │   │   ├── uart_system_xbar_1.cpp
+    │               │   │   │   ├── uart_system_xbar_1.h
+    │               │   │   │   ├── uart_system_xbar_1_sc.cpp
+    │               │   │   │   ├── uart_system_xbar_1_sc.h
+    │               │   │   │   ├── uart_system_xbar_1_stub.sv
+    │               │   │   │   └── uart_system_xbar_1.v
+    │               │   │   ├── src
+    │               │   │   │   ├── axi_crossbar.cpp
+    │               │   │   │   └── axi_crossbar.h
+    │               │   │   ├── synth
+    │               │   │   │   └── uart_system_xbar_1.v
+    │               │   │   ├── uart_system_xbar_1_ooc.xdc
+    │               │   │   └── uart_system_xbar_1.xml
+    │               │   └── uart_system_xlconcat_0_0
+    │               │       ├── sim
+    │               │       │   └── uart_system_xlconcat_0_0.v
+    │               │       ├── synth
+    │               │       │   └── uart_system_xlconcat_0_0.v
+    │               │       └── uart_system_xlconcat_0_0.xml
+    │               ├── ipshared
+    │               │   ├── 0513
+    │               │   │   └── hdl
+    │               │   │       └── lib_pkg_v1_0_rfs.vhd
+    │               │   ├── 2237
+    │               │   │   └── hdl
+    │               │   │       └── axi_datamover_v5_1_vh_rfs.vhd
+    │               │   ├── 25a8
+    │               │   │   └── hdl
+    │               │   │       └── blk_mem_gen_v8_4_vhsyn_rfs.vhd
+    │               │   ├── 3111
+    │               │   │   └── hdl
+    │               │   │       └── axi_data_fifo_v2_1_vl_rfs.v
+    │               │   ├── 4b67
+    │               │   │   └── hdl
+    │               │   │       └── xlconcat_v2_1_vl_rfs.v
+    │               │   ├── 51ce
+    │               │   │   └── hdl
+    │               │   │       └── lib_srl_fifo_v1_0_rfs.vhd
+    │               │   ├── 6c82
+    │               │   │   └── hdl
+    │               │   │       └── lib_fifo_v1_0_rfs.vhd
+    │               │   ├── 70c4
+    │               │   │   └── hdl
+    │               │   │       └── axi_dma_v7_1_vh_rfs.vhd
+    │               │   ├── 751a
+    │               │   │   └── hdl
+    │               │   │       └── axi_sg_v4_1_rfs.vhd
+    │               │   ├── 83df
+    │               │   │   ├── hdl
+    │               │   │   │   ├── fifo_generator_v13_2_rfs.v
+    │               │   │   │   ├── fifo_generator_v13_2_rfs.vhd
+    │               │   │   │   └── fifo_generator_v13_2_vhsyn_rfs.vhd
+    │               │   │   └── simulation
+    │               │   │       └── fifo_generator_vlog_beh.v
+    │               │   ├── 8842
+    │               │   │   └── hdl
+    │               │   │       └── proc_sys_reset_v5_0_vh_rfs.vhd
+    │               │   ├── 8fd3
+    │               │   │   └── hdl
+    │               │   │       └── verilog
+    │               │   │           ├── processing_system7_v5_5_atc.v
+    │               │   │           ├── processing_system7_v5_5_aw_atc.v
+    │               │   │           ├── processing_system7_v5_5_b_atc.v
+    │               │   │           ├── processing_system7_v5_5_trace_buffer.v
+    │               │   │           └── processing_system7_v5_5_w_atc.v
+    │               │   ├── aeb3
+    │               │   │   └── hdl
+    │               │   │       └── axi_protocol_converter_v2_1_vl_rfs.v
+    │               │   ├── b752
+    │               │   │   └── hdl
+    │               │   │       └── generic_baseblocks_v2_1_vl_rfs.v
+    │               │   ├── c40e
+    │               │   │   └── hdl
+    │               │   │       └── axi_crossbar_v2_1_vl_rfs.v
+    │               │   ├── ec67
+    │               │   │   └── hdl
+    │               │   │       ├── axi_infrastructure_v1_1_0.vh
+    │               │   │       └── axi_infrastructure_v1_1_vl_rfs.v
+    │               │   ├── ee60
+    │               │   │   └── hdl
+    │               │   │       ├── processing_system7_vip_v1_0_15_apis.v
+    │               │   │       ├── processing_system7_vip_v1_0_15_axi_acp.v
+    │               │   │       ├── processing_system7_vip_v1_0_15_axi_gp.v
+    │               │   │       ├── processing_system7_vip_v1_0_15_axi_hp.v
+    │               │   │       ├── processing_system7_vip_v1_0_15_local_params.v
+    │               │   │       ├── processing_system7_vip_v1_0_15_reg_init.v
+    │               │   │       ├── processing_system7_vip_v1_0_15_reg_params.v
+    │               │   │       ├── processing_system7_vip_v1_0_15_unused_ports.v
+    │               │   │       └── processing_system7_vip_v1_0_vl_rfs.sv
+    │               │   ├── ef1e
+    │               │   │   └── hdl
+    │               │   │       └── lib_cdc_v1_0_rfs.vhd
+    │               │   ├── f0b4
+    │               │   │   └── hdl
+    │               │   │       └── axi_register_slice_v2_1_vl_rfs.v
+    │               │   ├── fb12
+    │               │   │   └── hdl
+    │               │   │       └── verilog
+    │               │   │           ├── uart_hls_control_s_axi.v
+    │               │   │           ├── uart_hls_hls_deadlock_idx0_monitor.v
+    │               │   │           ├── uart_hls_hls_deadlock_kernel_monitor_top.vh
+    │               │   │           ├── uart_hls_regslice_both.v
+    │               │   │           ├── uart_hls_uart_rx.v
+    │               │   │           └── uart_hls.v
+    │               │   └── ffc2
+    │               │       └── hdl
+    │               │           └── axi_vip_v1_1_vl_rfs.sv
+    │               ├── sim
+    │               │   ├── uart_system.protoinst
+    │               │   └── uart_system.v
+    │               ├── synth
+    │               │   ├── uart_system.hwdef
+    │               │   └── uart_system.v
+    │               ├── uart_system.bda
+    │               ├── uart_system.bxml
+    │               └── uart_system_ooc.xdc
+    ├── hls_uart_dma.hw
+    │   └── hls_uart_dma.lpr
+    ├── hls_uart_dma.ip_user_files
+    ├── hls_uart_dma.sim
+    ├── hls_uart_dma.srcs
+    │   ├── constrs_1
+    │   │   └── new
+    │   │       └── uart_pins.xdc
+    │   └── sources_1
+    │       └── bd
+    │           └── uart_system
+    │               ├── ip
+    │               │   ├── uart_system_auto_pc_0
+    │               │   │   └── uart_system_auto_pc_0.xci
+    │               │   ├── uart_system_auto_pc_1
+    │               │   │   └── uart_system_auto_pc_1.xci
+    │               │   ├── uart_system_axi_dma_rx_0
+    │               │   │   └── uart_system_axi_dma_rx_0.xci
+    │               │   ├── uart_system_axi_dma_tx_0
+    │               │   │   └── uart_system_axi_dma_tx_0.xci
+    │               │   ├── uart_system_axi_interconnect_gp0_0
+    │               │   │   └── uart_system_axi_interconnect_gp0_0.xci
+    │               │   ├── uart_system_axi_interconnect_hp0_0
+    │               │   │   └── uart_system_axi_interconnect_hp0_0.xci
+    │               │   ├── uart_system_processing_system7_0_0
+    │               │   │   └── uart_system_processing_system7_0_0.xci
+    │               │   ├── uart_system_rst_ps7_100M_0
+    │               │   │   └── uart_system_rst_ps7_100M_0.xci
+    │               │   ├── uart_system_uart_hls_0_0
+    │               │   │   └── uart_system_uart_hls_0_0.xci
+    │               │   ├── uart_system_xbar_0
+    │               │   │   └── uart_system_xbar_0.xci
+    │               │   ├── uart_system_xbar_1
+    │               │   │   └── uart_system_xbar_1.xci
+    │               │   └── uart_system_xlconcat_0_0
+    │               │       └── uart_system_xlconcat_0_0.xci
+    │               ├── uart_system.bd
+    │               └── uart_system.bda
+    └── hls_uart_dma.xpr
+
+132 directories, 185 files
+
+
