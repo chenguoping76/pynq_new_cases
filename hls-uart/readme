@@ -1,0 +1,11 @@
+演示使用HLS和Vivado， pynq 快速构建zynq soc 硬件控制，驱动生成
+
+第0步：下载本目录的两个文件夹，解压至ubuntu 环境
+
+第1步：source 软件
+ubuntu@ubuntu:~/workspace/B220/hls-uart-project$ source /opt/Xilinx/Vitis/2022.2/settings64.sh
+
+
+第2步：生成hls-uart IP
+
+第3步：构建vivado 集成系统
