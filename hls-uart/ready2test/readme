@@ -1,0 +1,6 @@
+this fold will content all hw and sw files run on b220 board directly 
+directory:
+./overlay
+    + .bit
+    + .hwh
+.ipynb
